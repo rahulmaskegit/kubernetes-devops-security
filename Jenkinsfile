@@ -60,14 +60,3 @@ pipeline {
 
 
 
-## Updating the Testcase in /src/test/java/com/devsecops/NumericApplicationTests.java
-
-@Test
-    public void welcomeMessage() throws Exception {
-        this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string("Kubernetes DevSecOps"));
-    }
-
-        
-}    
-}
