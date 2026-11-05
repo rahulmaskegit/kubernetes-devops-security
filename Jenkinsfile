@@ -1,4 +1,3 @@
-
 pipeline {
   agent any
 
@@ -24,13 +23,16 @@ pipeline {
     }
 
     stage('Mutation Tests - PIT') {
-      steps { 
-        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE')
-         sh "mvn org.pitest:pitest-maven:mutationCoverage"
-       }
-       post {
+      steps {
+        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+          sh "mvn org.pitest:pitest-maven:mutationCoverage"
+        }
+      }
+      post {
         always {
-          pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+          catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+            pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+          }
         }
       }
     }
@@ -38,10 +40,9 @@ pipeline {
     stage('SonarQube Analysis') {
       steps {
         sh "mvn sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url= http://34.93.186.77:9000 -Dsonar.login=sqp_c4952316a973cbaec79c2d99de9eef29ab400933"
+      }
     }
-  }
 
-    
     stage('Docker Build and Push') {
       steps {
         withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
@@ -62,9 +63,4 @@ pipeline {
     }
 
   }
-
 }
-
-
-
-
