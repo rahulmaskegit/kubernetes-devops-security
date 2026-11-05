@@ -39,7 +39,7 @@ pipeline {
 
     stage('SonarQube Analysis') {
       steps {
-        sh "mvn sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url= http://34.93.186.77:9000 -Dsonar.login=sqp_c4952316a973cbaec79c2d99de9eef29ab400933"
+        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url= http://34.93.186.77:9000 -Dsonar.login=sqp_c4952316a973cbaec79c2d99de9eef29ab400933"
       }
     }
 
